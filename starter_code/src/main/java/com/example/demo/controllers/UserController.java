@@ -47,10 +47,12 @@ public class UserController {
 		user.setCart(cart);
 		if(createUserRequest.getPassword().length() < 7 ||
 				!createUserRequest.getPassword().equals(createUserRequest.getConfirmPassword())){
+			log.warn("Passwords for: "+ user.getUsername() + " do not match");
 			return ResponseEntity.badRequest().build();
 		}
 		user.setPassword(bCryptPasswordEncoder.encode(createUserRequest.getPassword()));
 		userRepository.save(user);
+		log.info("User: " + user.getUsername()+ " was created successfully");
 		return ResponseEntity.ok(user);
 	}
 	
